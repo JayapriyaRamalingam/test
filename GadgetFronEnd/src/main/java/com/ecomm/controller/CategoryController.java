@@ -54,6 +54,35 @@ public class CategoryController
 		
 		return "Category";
 	}
-
+	
+	@RequestMapping(value = "/editCategory/{categoryId}")
+	public String editCategory(@PathVariable("categoryId")int categoryId,Model m)
+	{
+		Category category = categoryDAO.getCategory(categoryId);
+		m.addAttribute("myCategory", category);
+		
+		List<Category> listCategories = categoryDAO.ListCategories();
+		m.addAttribute("categories",listCategories);
+		
+		return "UpdateCategory";
+	}
+	
+	
+	@RequestMapping(value = "/updateCategory", method = RequestMethod.POST)
+	public String updateCategory(@RequestParam("catId")int categoryId, @RequestParam("catName")String categoryName,@RequestParam("catDesc")String categoryDesc, Model m)
+	{
+		Category category = categoryDAO.getCategory(categoryId);
+		category.setCategoryName(categoryName);
+		category.setCategoryDesc(categoryDesc);
+				
+		categoryDAO.updateCategory(category);
+		
+		List<Category> listCategories = categoryDAO.ListCategories();
+		m.addAttribute("categories",listCategories);
+		
+		return "Category";
+		
+	}
+	
 }
 
